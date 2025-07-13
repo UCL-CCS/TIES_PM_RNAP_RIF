@@ -1,6 +1,6 @@
 # TIES_PM_RNAP_RIF
 
-This repository contains all the Molecular Dynamics (MD) simulation data referenced in the paper **"Transforming Tuberculosis Care: Rapid Accurate and Reliable Computer-Based Prediction of Drug Resistance to Guide Targeted Treatments"**. The dataset includes input files, output files, and calculated results, all of which were generated and analyzed mainly on the Polaris High-Performance Computing (HPC) platform as well as local computers.
+This repository contains all the Molecular Dynamics (MD) simulation data referenced in the paper **"Rapid, accurate and reproducible de novo prediction of resistance to antituberculars"**. The dataset includes input files, output files, and calculated results, all of which were generated and analyzed mainly on the Polaris High-Performance Computing (HPC) platform as well as local computers.
 
 ## Repository Structure
 The repository is organized into three main directories:
