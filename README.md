@@ -12,7 +12,7 @@ The TIES-PM simulations were primarily executed on the Polaris High-Performance 
 
 The repository is organized into three main directories:
 
-### 1. Input Files (`1_Input_files/`)
+### 1. Input Files 
 
 Contains all files required to set up and run the TIES-PM workflow. It is divided into three parts:
 
@@ -20,7 +20,7 @@ Contains all files required to set up and run the TIES-PM workflow. It is divide
 - **Calculation**: A sample directory structure and configuration files (`replica-confs`) for both `com` (complex) and `prot` (apo protein), along with a job submission script for Polaris.
 - **Post-processing**: Scripts for analyzing simulation outputs and computing free energy changes, including an automated analysis pipeline (`auto_post0.sh`) and support scripts.
 
-### 2. Output Files (`2_Output_files/`)
+### 2. Output Files 
 
 Provides a complete example of raw simulation outputs for the mutation **V170F**, demonstrating the directory structure used in TIES-PM:
 
@@ -28,7 +28,7 @@ Provides a complete example of raw simulation outputs for the mutation **V170F**
 - Each lambda window includes 5 replicas.
 - The `sim1.alch` files from each replica are the key inputs for ΔΔG calculation.
 
-### 3. Results (`3_Results/`)
+### 3. Results 
 
 Contains all processed free energy results from the TIES-PM workflow. The main results file includes:
 
