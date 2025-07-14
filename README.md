@@ -57,7 +57,7 @@ The workflow is compatible with other HPC platforms with minor adjustments. Deta
 
 If you use the data or structure of this repository, please cite our paper:
 
-> [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5166252)
+> [Click here for preprint paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5166252)
 
 ---
 
