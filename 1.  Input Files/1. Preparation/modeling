@@ -1,0 +1,91 @@
+#!/bin/bash
+
+WRK=$PWD
+annnb=$1
+A1A=${annnb::1}
+A1B=${annnb: -1}
+A2B=${A1A}2${A1B}
+NNN=${annnb:1:-1}
+A3A=`awk -v a=$A1A '($1==a) {print $2}' $WRK/preparation/hybrid-aa/A1-A3.txt`
+A3B=`awk -v a=$A1B '($1==a) {print $2}' $WRK/preparation/hybrid-aa/A1-A3.txt`
+
+echo "Part 1: Initial settings completed. Now proceed to hybrid amino acid preparation..."
+
+cd $WRK/preparation/hybrid-aa   ### all mutations are in ./preparation/hybrid-aa
+mkdir $A2B
+cd $A2B
+../ties_hybrid_amino_lib.sh $A3A $A3B $A2B ff14SB
+
+echo "######Part 2: Hybrid amino acid preparation completed. Now proceed to tleap..."
+
+cd $WRK/models   ### all models are in ./models
+cp -r axxxb $annnb   ### all files needed are in axxxb while annnb is the new intended one and nnn is the mutation position
+cd $annnb/com
+cp ../../../preparation/hybrid-aa/$A2B/* ./
+../../../ties_hybrid_rec_pdb.sh ../../../wt/5uh6_tleap.pdb $NNN $A2B.lib   
+cd ../prot
+cp ../../../preparation/hybrid-aa/$A2B/* ./
+echo "$PWD"
+../../../ties_hybrid_rec_pdb.sh ../../../wt/5uh6_tleap.pdb $NNN $A2B.lib
+cd ../com
+
+{
+TMP1=`head -1 hybrid_res_bond_info.dat`
+
+echo $TMP1
+
+TMP2=`tail -1 hybrid_res_bond_info.dat`
+
+##! copy all the info in .dat
+
+sed -i "s/X2Y/$A2B/; s/^BOND1.*$/$TMP1/; s/^BOND2.*$/$TMP2/" tleap.in
+#nohup time tleap -s -f tleap.in > outleap.txt 2>&1 &  ### start to tleap
+tleap -s -f tleap.in
+echo "#####################Part 3-1: Tleap for complex started. Now proceed to tleap for protein..."
+} &&
+
+{	
+cd ../prot/
+sed -i "s/X2Y/$A2B/; s/^BOND1.*$/$TMP1/; s/^BOND2.*$/$TMP2/" tleap.in
+#nohup time tleap -s -f tleap.in > outleap.txt 2>&1 &  ### start to tleap 
+tleap -s -f tleap.in
+echo "######################Part 3-2: Tleap for protein started. Now proceed to tleap for protein..."
+ 
+} &&
+
+{
+
+### below should be waited until the last command is finished
+
+echo "Part 3-3: Tleap completed. Now proceed to amber and tags..."
+
+cd ../com
+ambpdb -p complex.prmtop -c complex.crd > complex_ambpdb.pdb
+bash tags.sh $A2B
+} &&
+{
+cd ../prot
+ambpdb -p complex.prmtop -c complex.crd > complex_ambpdb.pdb
+bash tags.sh $A2B
+cd ../com
+cp rec.pdb rec-noh.pdb
+sed -i '1d' rec-noh.pdb 
+} &&
+
+{
+### below should be waited until the last command is finished
+
+echo "Part 4: Tags completed. Now proceed to final step: awk"
+
+awk -f ../../../constraint.awk complex-tagged.pdb ./rec-noh.pdb > cons.pdb
+
+cd ../prot
+#cp rec.pdb rec-noh.pdb
+#sed -i '1d' rec-noh.pdb
+} &&
+
+{
+awk -f ../../../constraint.awk complex-tagged.pdb ../com/rec-noh.pdb > cons.pdb
+echo "Part 5: All done. Congrats!"
+}
+

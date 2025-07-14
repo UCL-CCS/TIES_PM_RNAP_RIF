@@ -1,0 +1,38 @@
+source leaprc.DNA.OL15
+source leaprc.RNA.OL3
+source leaprc.protein.ff14SB
+source leaprc.gaff2
+source leaprc.water.tip3p
+#frcmod = loadamberparams pseudo_hybrid.frcmod
+#loadoff S2L.lib
+
+rfp = loadmol2 rfp.mol2
+frcmod = loadamberparams rfp.frcmod
+
+addAtomTypes { { "ZN" "Zn" "sp3" } { "S3" "S" "sp3" } { "N2" "N" "sp3" } } #Add atom types for the ZAFF metal center with Center ID 4
+
+loadamberprep ZAFF.prep
+loadamberparams ZAFF.frcmod
+
+rec = loadpdb 5uh6_tleap.pdb
+#bond rec.879.C rec.880.NT1
+#bond rec.880.CT18 rec.881.N
+
+bond rec.3300.ZN rec.2466.SG
+bond rec.3300.ZN rec.2543.SG
+bond rec.3300.ZN rec.2553.SG
+bond rec.3300.ZN rec.2550.SG
+
+bond rec.3301.ZN rec.1653.SG
+bond rec.3301.ZN rec.1650.SG
+bond rec.3301.ZN rec.1637.SG
+bond rec.3301.ZN rec.1635.SG
+
+complex = combine{rec rfp}
+alignaxes complex
+addions2 complex Na+ 0.0
+solvatebox complex TIP3PBOX 13
+
+savepdb complex complex.pdb
+saveamberparm complex complex.prmtop complex.crd
+quit
